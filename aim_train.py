@@ -18,7 +18,7 @@ POS_Y = window.winfo_screenheight() // 2 - HEIGHT // 2
 
 window.geometry(f'{WIDTH}x{HEIGHT}+{POS_X}+{POS_Y}')
 window.resizable(width=False, height=False)
-window.title('Aim Train!')
+window.title(f'Aim Train! Счет: {points}')
 
 
 canvas = Canvas(bg='lavender')
@@ -42,6 +42,7 @@ def oval():
     rr = random.randint(20, 50)
     circle = canvas.create_oval(rx, ry, rx+rr, ry+rr, outline="#f11", fill=random.choice(colors), width=2)
     canvas.tag_bind(circle, '<Button-1>', click)   # При нажатии на фигуру вызвется функция click()
+    window.title(f'Aim Train! Счеты: {points}')   # Каждый раз когда появ-ся новая фигура title меняется и показ-ет акт. кол-во очков
     
 
 def click(event):
@@ -76,16 +77,19 @@ def lose():
     score.place(x=310, y=250)
     restart.place(x=307, y=290)
     change.place(x=315, y=375)
-    rect = canvas.create_rectangle(275, 175, 518, 425, width=2, fill='gray')
+    rect = canvas.create_rectangle(275, 175, 518, 430, width=2, fill='gray')
 
 
 def launch():
+    """
+    Стартовое меню игры где можно выбрать сложномть
+    """
     global strt, combo, set
     combo = Combobox(window)
     combo['values'] = ('Easy', 'Normal', 'Hard')
     combo.current(1)
     combo.place(x=295, y=285)
-    set_dif()
+    set_dif()   #  Изначально выставляется сложность Normal
     set = tk.Button(text='ok', font=('Arial Bold', 10), command=set_dif)
     set.place(x=440, y=280)
     strt = tk.Button(text='START', font=('Arial Bold', 30), bg='Green', command=oval)
@@ -93,6 +97,10 @@ def launch():
 
 
 def set_dif():
+    """
+    Функция конвертирует сложности 'Easy, Normal, Hard' в цифры 
+    и создает глобальную переменную dif с этими цифрами
+    """
     global dif
     dif = combo.get()
     if dif == 'Easy':
@@ -100,7 +108,7 @@ def set_dif():
     elif dif == 'Hard':
         dif = 0.7
     else:
-        dif = 0.9
+        dif = 0.95
 
 
 def play_again():
@@ -127,8 +135,3 @@ def change_dif():
 
 launch()
 mainloop()
-
-
-
-
-
